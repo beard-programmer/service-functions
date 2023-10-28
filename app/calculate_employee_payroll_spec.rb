@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'line_item'
+require_relative 'employee_payroll'
+require_relative 'calculate_employee_payroll'
+require_relative 'calculate_taxes'
+
 RSpec.describe ServiceFunctions::CalculateEmployeePayroll, type: :service_function do
   describe '.call' do
     subject(:when_calculating_employee_payroll) do
