@@ -24,9 +24,9 @@ module ServiceFunctions
     def find_policy(line_item)
       line_item_key = line_item.line_item_key
       if line_item_key == 'meal_voucher'
-        'exempt'
+        'EXEMPT'
       else
-        'taxable'
+        'TAXABLE'
       end
     end
   end

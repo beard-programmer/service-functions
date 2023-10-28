@@ -9,7 +9,7 @@ module ServiceFunctions
     # @returns [CalculatedLineItem]
     def call(line_item)
       amount = line_item.amount
-      exempt = if line_item.tax_policy == 'taxable'
+      exempt = if line_item.tax_policy == 'TAXABLE'
                  0
                else
                  amount / 2
