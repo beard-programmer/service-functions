@@ -25,10 +25,8 @@ module ServiceFunctions
       line_item_key = line_item.line_item_key
       if line_item_key == 'meal_voucher'
         'exempt'
-      elsif ['salary', 'bonus'].include? line_item_key
-        'taxable'
       else
-        raise StandardError
+        'taxable'
       end
     end
   end
