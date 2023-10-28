@@ -1,0 +1,1 @@
+Specfiles are placed along with source code they are testing inside /app
