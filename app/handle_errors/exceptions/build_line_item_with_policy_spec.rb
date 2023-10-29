@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'line_item'
+require_relative 'build_line_item_with_policy'
 
 RSpec.describe ServiceFunctions::HandleErrors::Exceptions::BuildLineItemWithPolicy, type: :service_function do
   describe '.call' do
