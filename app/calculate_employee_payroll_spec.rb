@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'line_item'
+require_relative 'build_line_item_with_policy'
 require_relative 'employee_payroll'
 require_relative 'calculate_employee_payroll'
 require_relative 'calculate_taxes'
