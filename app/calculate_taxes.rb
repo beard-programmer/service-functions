@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+require_relative 'line_item'
+
 module ServiceFunctions
   # Verb + anemic method call: Service function
   module CalculateTaxes
     module_function
 
-    # @param line_item [LineItemWithPolicy]
+    # @param [LineItemWithPolicy] line_item
     # @returns [CalculatedLineItem]
     def call(line_item)
       amount = line_item.amount
