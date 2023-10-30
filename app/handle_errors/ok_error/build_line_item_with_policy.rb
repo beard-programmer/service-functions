@@ -9,8 +9,9 @@ module ServiceFunctions
         extend self
 
         # @param [ServiceFunctions::HandleErrors::OkError::CalculatedLineItem] line_item
-        # @return [Array(Symbol, LineItemWithPolicy)]
-        # @return [Array(Symbol, String)]
+        # @return [Array(Symbol, ServiceFunctions::HandleErrors::OkError::LineItemWithPolicy)] when all good,
+        # first element is symbol :ok and second is line item
+        # @return [Array(Symbol, String)] when failed, first element is symbol :error an d second is error message
         def call(line_item)
           case line_item
           in { amount: Integer => amount, line_item_key: } if ['bonus', 'salary'].include?(line_item_key) then
