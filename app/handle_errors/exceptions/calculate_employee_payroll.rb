@@ -4,6 +4,8 @@ module ServiceFunctions
   module HandleErrors
     module Exceptions
       module CalculateEmployeePayroll
+        class CalculationError < StandardError; end
+
         extend self
 
         # @param build_line_item_with_policy_fn [#call] - Dependency,
@@ -13,7 +15,7 @@ module ServiceFunctions
         # that responds to #call with an argument LineItemWithPolicy
         # and returns CalculatedLineItem
         # @param employee_payroll [EmployeePayroll]
-        #
+        # @raise [CalculationError]
         # @returns [CalculatedEmployeePayroll]
         def call(
           build_line_item_with_policy_fn, # Dependency
@@ -22,14 +24,21 @@ module ServiceFunctions
         )
           # Step 1: receive line items.
           line_items = employee_payroll.line_items
-          # Step 2: Build line items with policy using Dependency
+
           line_items_with_policies = line_items.map do |line_item|
             build_line_item_with_policy_fn.call(line_item) # Dependency
+          rescue ServiceFunctions::HandleErrors::Exceptions::CalculateTaxes::InvalidInput,
+                 ServiceFunctions::HandleErrors::Exceptions::CalculateTaxes::PolicyNotFound => e
+            raise CalculationError, "Failed to build line item with policy: #{e.message}"
           end
+
           # Step 3: calculate taxes for each line item using Dependency
           calculated_line_items = line_items_with_policies.map do |item_with_policy|
             calculate_taxes_fn.call(item_with_policy) # Dependency
+          rescue ServiceFunctions::HandleErrors::Exceptions::CalculateTaxes::InvalidInput => e
+            raise CalculationError, "Failed to calculate taxes: #{e.message}"
           end
+
           # Step 4: build CalculatedEmployeePayroll
           # Step 5: return it
           build_calculated_employee_payroll(

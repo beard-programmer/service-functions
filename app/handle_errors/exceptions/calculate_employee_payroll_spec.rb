@@ -3,7 +3,7 @@
 require_relative 'line_item'
 require_relative 'employee_payroll'
 require_relative 'calculate_employee_payroll'
-require_relative 'calculate_taxes'
+# require_relative 'calculate_taxes'
 
 RSpec.describe ServiceFunctions::HandleErrors::Exceptions::CalculateEmployeePayroll, type: :service_function do
   describe '.call' do
@@ -14,16 +14,17 @@ RSpec.describe ServiceFunctions::HandleErrors::Exceptions::CalculateEmployeePayr
         employee_payroll
       )
     end
-    let(:employee_payroll) do
-      ServiceFunctions::HandleErrors::Exceptions::EmployeePayroll.new(
-        employee_id: 1, line_items: [
-          ServiceFunctions::HandleErrors::Exceptions::LineItem.new(amount: 100, line_item_key: 'salary'),
-          ServiceFunctions::HandleErrors::Exceptions::LineItem.new(amount: 150, line_item_key: 'bonus'),
-          ServiceFunctions::HandleErrors::Exceptions::LineItem.new(amount: 200, line_item_key: 'meal_voucher')
-        ]
-      )
-    end
+
     context 'given correct employee payroll' do
+      let(:employee_payroll) do
+        ServiceFunctions::HandleErrors::Exceptions::EmployeePayroll.new(
+          employee_id: 1, line_items: [
+            ServiceFunctions::HandleErrors::Exceptions::LineItem.new(amount: 100, line_item_key: 'salary'),
+            ServiceFunctions::HandleErrors::Exceptions::LineItem.new(amount: 150, line_item_key: 'bonus'),
+            ServiceFunctions::HandleErrors::Exceptions::LineItem.new(amount: 200, line_item_key: 'meal_voucher')
+          ]
+        )
+      end
       let(:expected_result) do
         ServiceFunctions::HandleErrors::Exceptions::CalculatedEmployeePayroll.new(
           employee_id: 1,
@@ -34,6 +35,24 @@ RSpec.describe ServiceFunctions::HandleErrors::Exceptions::CalculateEmployeePayr
       end
       it 'then returns expected calculated employee payroll' do
         expect(when_calculating_employee_payroll).to eq expected_result
+      end
+    end
+
+    context 'given invalid employee payroll' do
+      let(:employee_payroll) do
+        ServiceFunctions::HandleErrors::Exceptions::EmployeePayroll.new(
+          employee_id: 1, line_items: [
+            ServiceFunctions::HandleErrors::Exceptions::LineItem.new(amount: nil, line_item_key: 'salary'),
+            ServiceFunctions::HandleErrors::Exceptions::LineItem.new(amount: 150, line_item_key: 'bonus'),
+            ServiceFunctions::HandleErrors::Exceptions::LineItem.new(amount: 200, line_item_key: 'meal_voucher')
+          ]
+        )
+      end
+
+      it 'then raises expected error' do
+        expect { when_calculating_employee_payroll }.to(
+          raise_error(ServiceFunctions::HandleErrors::Exceptions::CalculateEmployeePayroll::CalculationError)
+        )
       end
     end
   end
