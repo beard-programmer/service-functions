@@ -29,30 +29,3 @@ module ServiceFunctions
     end
   end
 end
-
-class Ololo < Data.define(:key1); end
-
-def test
-  input = { key1: 1, key2: 2 }
-
-  case input
-  in { key1: 1, key2: 2 } then p('first match')
-  else p('first not match')
-  end
-
-  case input
-  in key1: 1, key2: 2 then p('second match')
-  else p('second not match')
-  end
-
-  input2 = Ololo.new(key1: 1)
-  case input2
-  in key1: 1 then p('third match')
-  else p('third not match')
-  end
-
-  case input2
-  in { key1: 1 } then p('forth match')
-  else p('forth not match')
-  end
-end
