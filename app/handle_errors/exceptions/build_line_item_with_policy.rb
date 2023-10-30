@@ -5,7 +5,6 @@ require_relative 'line_item'
 module ServiceFunctions
   module HandleErrors
     module Exceptions
-      # Verb + anemic method call: Service function
       module BuildLineItemWithPolicy
         class InvalidInput < ArgumentError; end
         class PolicyNotFound < StandardError; end

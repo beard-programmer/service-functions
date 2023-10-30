@@ -20,7 +20,6 @@ RSpec.describe ServiceFunctions::HandleErrors::Exceptions::CalculateEmployeePayr
           ServiceFunctions::HandleErrors::Exceptions::LineItem.new(amount: 100, line_item_key: 'salary'),
           ServiceFunctions::HandleErrors::Exceptions::LineItem.new(amount: 150, line_item_key: 'bonus'),
           ServiceFunctions::HandleErrors::Exceptions::LineItem.new(amount: 200, line_item_key: 'meal_voucher')
-          # compensation
         ]
       )
     end
