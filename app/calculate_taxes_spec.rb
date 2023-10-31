@@ -14,7 +14,6 @@ RSpec.describe ServiceFunctions::CalculateTaxes, type: :service_function do
       end
 
       it 'then should calculate taxes and return CalculatedLineItem' do
-        expect(1).to eq(2)
         expect(when_calculating_taxes).to be_instance_of(ServiceFunctions::CalculatedLineItem)
       end
     end
