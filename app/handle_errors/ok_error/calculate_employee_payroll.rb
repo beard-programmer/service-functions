@@ -8,68 +8,45 @@ module ServiceFunctions
 
         extend self
 
-        # @param build_line_item_with_policy_fn [#call] - Dependency,
+        # @param [Proc] build_line_item_with_policy_fn - Dependency,
         # that responds to #call with an LineItem argument
         # and returns LineItemWithPolicy
-        # @param calculate_taxes_fn [#call] - Dependency,
+        # @param [Proc] calculate_taxes_fn - Dependency,
         # that responds to #call with an argument LineItemWithPolicy
         # and returns CalculatedLineItem
         # @param employee_payroll [EmployeePayroll]
         # @return [Array(Symbol, ServiceFunctions::HandleErrors::OkError::CalculatedEmployeePayroll)] when success,
         # first element is symbol :ok
-        # @return [Array(Symbol, String)] when failed, first element is symbol :error an d second is error message
+        # @return [Array(Symbol, String)] when failed, first element is symbol :error,
         def call(
           build_line_item_with_policy_fn, # Dependency
           calculate_taxes_fn, # Dependency
           employee_payroll # Actual input value
         )
           # Step 1: receive line items.
-          line_items = employee_payroll.line_items
-
-          # Step 2: Build line items with policy using Dependency
-          build_result = reduce_collection(line_items, build_line_item_with_policy_fn)
-          return build_result if build_result in [:error, _]
-
-          build_result => [:ok, line_items_with_policies]
+          # Step 1, 2: receive line items and build line items with policy using Dependency
+          results = employee_payroll.line_items.map { |line_item| build_line_item_with_policy_fn.call(line_item) }
+          if results in [*, [:error, reason], *]
+            return [:error, reason]
+          end
 
           # Step 3: calculate taxes for each line item using Dependency
-          calculation_result = reduce_collection(line_items_with_policies, calculate_taxes_fn)
-          return calculation_result if calculation_result in [:error, _]
+          results = results.map { |(_, item)| calculate_taxes_fn.call(item) }
+          if results in [*, [:error, reason], *]
+            return [:error, reason]
+          end
 
-          calculation_result => [:ok, calculated_line_items]
+          calculated_line_items = results.map { |(_, item)| item }
 
           # Step 4: build CalculatedEmployeePayroll
-          # Step 5: return it
           calculated = build_calculated_employee_payroll(
             employee_payroll, calculated_line_items
           )
+          # Step 5: return it
           [:ok, calculated]
         end
 
         private
-
-        # @param [Array(any)] collection
-        # @param [Lambda] operation
-        # @return [Array(Symbol, Array(any))] when :ok
-        # @return [Array(Symbol, String)] when :error
-        def reduce_collection(collection, operation)
-          collection.reduce([:ok, []]) do |collection_result, element|
-            case [collection_result, element]
-            in [[:error, reason], _] then [:error, reason]
-            in [[:ok, _], [:error, reason]] then [:error, reason]
-            else
-              operation_result = operation.call(element)
-              case operation_result
-              in [:ok, element] then
-                collection_result => [_, collection]
-                [:ok, collection + [element]]
-              else
-                operation_result => [_, reason]
-                [:error, reason]
-              end
-            end
-          end
-        end
 
         # @param employee_payroll [EmployeePayroll]
         # @param line_items [Array<CalculatedLineItem>]
