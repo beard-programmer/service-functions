@@ -3,8 +3,8 @@
 module ServiceFunctions
   module HandleErrors
     module OkError
-      EmployeePayroll = Data.define(:employee_id, :line_items)
-      CalculatedEmployeePayroll = Data.define(:employee_id, :total, :taxable, :exempt)
+      class EmployeePayroll < Data.define(:employee_id, :line_items); end
+      class CalculatedEmployeePayroll < Data.define(:employee_id, :total, :taxable, :exempt); end
     end
   end
 end

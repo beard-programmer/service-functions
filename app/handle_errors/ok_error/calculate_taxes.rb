@@ -8,9 +8,9 @@ module ServiceFunctions
         extend self
 
         # @param [LineItemWithPolicy] line_item
-        # @return [Array(Symbol, ServiceFunctions::HandleErrors::OkError::CalculatedLineItem)] when all good,
-        # first element is symbol :ok and second is line item
-        # @return [Array(Symbol, String)] when failed, first element is symbol :error an d second is error message
+        # @return [Array(Symbol, ServiceFunctions::HandleErrors::OkError::CalculatedLineItem)] when success
+        # @return [Array(Symbol, String)] when failed
+        # @return [] [:ok, data] or [:error, reason]
         def call(line_item)
           case line_item
           in amount: Integer => amount, tax_policy: 'TAXABLE' then

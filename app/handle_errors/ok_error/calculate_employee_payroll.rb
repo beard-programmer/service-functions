@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'employee_payroll'
+
 module ServiceFunctions
   module HandleErrors
     module OkError
@@ -12,10 +14,9 @@ module ServiceFunctions
         # @param [Proc] calculate_taxes_fn - Dependency,
         # that responds to #call with an argument LineItemWithPolicy
         # and returns CalculatedLineItem
-        # @param employee_payroll [EmployeePayroll]
-        # @return [Array(Symbol, ServiceFunctions::HandleErrors::OkError::CalculatedEmployeePayroll)] when success,
-        # first element is symbol :ok
-        # @return [Array(Symbol, String)] when failed, first element is symbol :error,
+        # @param [ServiceFunctions::HandleErrors::OkError::EmployeePayroll] employee_payroll
+        # @return [Array(Symbol, CalculatedEmployeePayroll)] when success [:ok, value]
+        # @return [Array(Symbol, String)] when failed [:error, reason]
         def call(
           build_line_item_with_policy_fn, # Dependency
           calculate_taxes_fn, # Dependency
@@ -46,8 +47,8 @@ module ServiceFunctions
 
         private
 
-        # @param employee_payroll [EmployeePayroll]
-        # @param line_items [Array<CalculatedLineItem>]
+        # @param employee_payroll [ServiceFunctions::HandleErrors::OkError::EmployeePayroll]
+        # @param line_items [Array<ServiceFunctions::HandleErrors::OkError::CalculatedLineItem>]
         # @returns [ServiceFunctions::HandleErrors::OkError::CalculatedEmployeePayroll]
         def build_calculated_employee_payroll(employee_payroll, line_items)
           employee_id = employee_payroll.employee_id
