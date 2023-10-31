@@ -27,13 +27,13 @@ module ServiceFunctions
           # Step 1, 2: receive line items and build line items with policy using Dependency
           results = employee_payroll.line_items.map { |line_item| build_line_item_with_policy_fn.call(line_item) }
           if results in [*, [:error, reason], *]
-            return [:error, reason]
+            return [:error, "Failed to calculate employees payroll. #{reason}"]
           end
 
           # Step 3: calculate taxes for each line item using Dependency
           results = results.map { |(_, item)| calculate_taxes_fn.call(item) }
           if results in [*, [:error, reason], *]
-            return [:error, reason]
+            return [:error, "Failed to calculate employees payroll. #{reason}"]
           end
 
           calculated_line_items = results.map { |(_, item)| item }
