@@ -15,8 +15,9 @@ module ServiceFunctions
         # that responds to #call with an argument LineItemWithPolicy
         # and returns CalculatedLineItem
         # @param employee_payroll [EmployeePayroll]
-        # @raise [CalculationError]
-        # @returns [CalculatedEmployeePayroll]
+        # @return [Array(Symbol, ServiceFunctions::HandleErrors::OkError::CalculatedEmployeePayroll)] when success,
+        # first element is symbol :ok
+        # @return [Array(Symbol, String)] when failed, first element is symbol :error an d second is error message
         def call(
           build_line_item_with_policy_fn, # Dependency
           calculate_taxes_fn, # Dependency
@@ -72,7 +73,7 @@ module ServiceFunctions
 
         # @param employee_payroll [EmployeePayroll]
         # @param line_items [Array<CalculatedLineItem>]
-        # @returns [CalculatedEmployeePayroll]
+        # @returns [ServiceFunctions::HandleErrors::OkError::CalculatedEmployeePayroll]
         def build_calculated_employee_payroll(employee_payroll, line_items)
           employee_id = employee_payroll.employee_id
           total, taxable, exempt = line_items.reduce(
