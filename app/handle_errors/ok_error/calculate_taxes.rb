@@ -5,8 +5,6 @@ module ServiceFunctions
     module OkError
       # Verb + anemic method call: Service function
       module CalculateTaxes
-        class InvalidInput < ArgumentError; end
-
         extend self
 
         # @param [LineItemWithPolicy] line_item

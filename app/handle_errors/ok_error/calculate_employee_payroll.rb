@@ -4,8 +4,6 @@ module ServiceFunctions
   module HandleErrors
     module OkError
       module CalculateEmployeePayroll
-        class CalculationError < StandardError; end
-
         extend self
 
         # @param [Proc] build_line_item_with_policy_fn - Dependency,
