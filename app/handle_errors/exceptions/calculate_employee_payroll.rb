@@ -25,6 +25,7 @@ module ServiceFunctions
           # Step 1: receive line items.
           line_items = employee_payroll.line_items
 
+          # Step 2: Build line items with policy using Dependency
           line_items_with_policies = line_items.map do |line_item|
             build_line_item_with_policy_fn.call(line_item) # Dependency
           rescue ServiceFunctions::HandleErrors::Exceptions::CalculateTaxes::InvalidInput,
