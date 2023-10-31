@@ -4,6 +4,7 @@ require_relative 'line_item'
 require_relative 'employee_payroll'
 require_relative 'calculate_employee_payroll'
 require_relative 'calculate_taxes'
+require_relative 'build_line_item_with_policy'
 
 module ServiceFunctions
   employee_payroll = EmployeePayroll.new(
