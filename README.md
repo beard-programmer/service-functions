@@ -11,3 +11,8 @@
 3. Clone repo
 4. Run bundle install to install dependencies
 5. Run tests using rspec `bundle exec rspec`
+
+## Contents
+- [app](app) - original code from the article showcasing service functions pattern
+- [app/handle_errors/exceptions](app/handle_errors/exceptions) - service functions pattern with Ruby way of error handling using exceptions
+- [app/handle_errors/ok_error](app/handle_errors/ok_error) - service functions pattern with Elixir style error handling
