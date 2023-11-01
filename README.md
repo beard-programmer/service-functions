@@ -16,3 +16,8 @@
 - [app](app) - original code from the article showcasing service functions pattern
 - [app/handle_errors/exceptions](app/handle_errors/exceptions) - service functions pattern with Ruby way of error handling using exceptions
 - [app/handle_errors/ok_error](app/handle_errors/ok_error) - service functions pattern with Elixir style error handling
+
+## Related projects
+- Service functions in [Ruby](https://github.com/beard-programmer/service-functions) this is original source that was used in Medium article (this repo)
+- Service functions in [Golang](https://github.com/beard-programmer/service-functions-go)
+- Service functions in [Elixir](https://github.com/beard-programmer/service-functions-elixir)
